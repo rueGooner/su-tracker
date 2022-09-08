@@ -1,9 +1,15 @@
 import { Injectable } from '@nestjs/common';
+import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateSeederDto } from './dto/create-seeder.dto';
 import { UpdateSeederDto } from './dto/update-seeder.dto';
 
 @Injectable()
 export class SeederService {
+  constructor(private prisma: PrismaService) {}
+  createFakeServiceUsers(): string {
+    return 'Create Fake Service Users';
+  }
+
   create(createSeederDto: CreateSeederDto) {
     return 'This action adds a new seeder';
   }

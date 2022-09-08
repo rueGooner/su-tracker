@@ -32,6 +32,7 @@ model ServiceUser {
   createdAt   DateTime  @default(now())
   movedIn     DateTime?
   updatedAt   DateTime  @updatedAt
+  conditions  String[]
 
   notes Note[]
 
