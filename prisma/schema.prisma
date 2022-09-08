@@ -9,3 +9,43 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Note {
+  id              Int            @id @default(autoincrement())
+  title           String         @unique
+  content         String?
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  ServiceUser     ServiceUser?   @relation(fields: [serviceUserId], references: [id])
+  serviceUserId   Int?
+  SupportWorker   SupportWorker? @relation(fields: [supportWorkerId], references: [id])
+  supportWorkerId Int?
+
+  @@map("notes")
+}
+
+model ServiceUser {
+  id          Int       @id @default(autoincrement())
+  name        String
+  surname     String
+  dateOfBirth DateTime?
+  createdAt   DateTime  @default(now())
+  movedIn     DateTime?
+  updatedAt   DateTime  @updatedAt
+
+  notes Note[]
+
+  @@map("service_users")
+}
+
+model SupportWorker {
+  id          Int       @id @default(autoincrement())
+  name        String
+  surname     String
+  dateOfBirth DateTime?
+  createdAt   DateTime  @default(now())
+  startDate   DateTime?
+  updatedAt   DateTime  @updatedAt
+
+  notes Note[]
+}
