@@ -45,6 +45,7 @@ model SupportWorker {
   email       String    @unique
   name        String
   surname     String
+  password    String
   dateOfBirth DateTime?
   createdAt   DateTime  @default(now())
   startDate   DateTime?
