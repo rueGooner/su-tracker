@@ -1,22 +1,29 @@
 import { Injectable } from '@nestjs/common';
-import { CreateAuthDto } from './dto/create-auth.dto';
-import { UpdateAuthDto } from './dto/update-auth.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { AuthDto } from './dto/auth.dto';
 
 @Injectable()
 export class AuthService {
-  register(createAuthDto: CreateAuthDto) {
+  constructor(private prisma: PrismaService) {}
+  register({ email, password }: AuthDto) {
+    const newSupportWorker = this.prisma.supportWorker.create({
+      data: {
+        email,
+        password: '',
+      },
+    });
     return 'This action adds a new auth';
   }
 
-  login(reateAuthDto: CreateAuthDto) {
+  login(reateAuthDto: AuthDto) {
     return `This action returns all auth`;
   }
 
-  logout(reateAuthDto: CreateAuthDto) {
+  logout(reateAuthDto: AuthDto) {
     return 'Logout';
   }
 
-  refresh(reateAuthDto: CreateAuthDto) {
+  refresh(reateAuthDto: AuthDto) {
     return 'Refresh Token';
   }
 }
