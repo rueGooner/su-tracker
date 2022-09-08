@@ -1,9 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { serviceUsers, supportWorkers } from './data/data';
-import { CreateSeederDto } from './dto/create-seeder.dto';
-import { UpdateSeederDto } from './dto/update-seeder.dto';
-
+import * as bcrypt from 'bcrypt';
 @Injectable()
 export class SeederService {
   constructor(private prisma: PrismaService) {}
@@ -17,11 +15,20 @@ export class SeederService {
     });
   }
 
-  createFakeSupportWorkers(): Promise<{
+  async createFakeSupportWorkers(): Promise<{
     count: number;
   }> {
+    const fakeStaff = await Promise.all(
+      supportWorkers.map(async (a) => {
+        return {
+          ...a,
+          password: await bcrypt.hash('password', 10),
+        };
+      }),
+    );
+
     return this.prisma.supportWorker.createMany({
-      data: supportWorkers,
+      data: fakeStaff,
       skipDuplicates: true,
     });
   }
