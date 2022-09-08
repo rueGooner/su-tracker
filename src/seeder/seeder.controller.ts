@@ -24,24 +24,4 @@ export class SeederController {
   createFakeSupportWorkers() {
     return this.seederService.createFakeSupportWorkers();
   }
-
-  @Get()
-  findAll() {
-    return this.seederService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.seederService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateSeederDto: UpdateSeederDto) {
-    return this.seederService.update(+id, updateSeederDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.seederService.remove(+id);
-  }
 }
