@@ -26,6 +26,7 @@ model Note {
 
 model ServiceUser {
   id          Int       @id @default(autoincrement())
+  uid         String    @unique
   name        String
   surname     String
   dateOfBirth DateTime?
@@ -47,6 +48,9 @@ model SupportWorker {
   createdAt   DateTime  @default(now())
   startDate   DateTime?
   updatedAt   DateTime  @updatedAt
+  skills      String[]
 
   notes Note[]
+
+  @@map("support_workers")
 }
