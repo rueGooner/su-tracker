@@ -20,6 +20,11 @@ export class SeederController {
     return this.seederService.createFakeServiceUsers();
   }
 
+  @Post('support-workers')
+  createFakeSupportWorkers() {
+    return this.seederService.createFakeSupportWorkers();
+  }
+
   @Get()
   findAll() {
     return this.seederService.findAll();
