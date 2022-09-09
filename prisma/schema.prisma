@@ -46,6 +46,7 @@ model SupportWorker {
   name        String
   surname     String
   password    String
+  hashedToken String?
   dateOfBirth DateTime?
   createdAt   DateTime  @default(now())
   startDate   DateTime?
