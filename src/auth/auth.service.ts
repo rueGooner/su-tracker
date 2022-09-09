@@ -55,8 +55,8 @@ export class AuthService {
       throw new ForbiddenException('Incorrect Email Provided');
 
     const passwordMatches = await bcrypt.compare(
-      foundSupportWorker.password,
       supportWorker.password,
+      foundSupportWorker.password,
     );
 
     if (!passwordMatches)
@@ -88,8 +88,23 @@ export class AuthService {
     return true;
   }
 
-  refresh(reateAuthDto: AuthDto) {
-    return 'Refresh Token';
+  async refreshTokens(id: number, token: string): Promise<Tokens> {
+    const supportWorker = await this.prisma.supportWorker.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (!supportWorker || !supportWorker.hashedToken)
+      throw new ForbiddenException('In correct credentials provided');
+
+    const tokensMatch = await bcrypt.compare(supportWorker.hashedToken, token);
+    if (!tokensMatch) throw new ForbiddenException('Passwords do not match');
+
+    const tokens = await this.getTokens(supportWorker.id, supportWorker.email);
+    await this.updateRefreshToken(supportWorker.id, tokens.refresh_token);
+
+    return tokens;
   }
 
   async hashPassword(password: string): Promise<string> {
