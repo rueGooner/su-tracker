@@ -1,5 +1,6 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, HttpCode, HttpStatus } from '@nestjs/common';
 import { AuthService } from './auth.service';
+import { CurrentUserId } from './decorators/userid.decorator';
 import { AuthDto } from './dto/auth.dto';
 import { Tokens } from './types/token.type';
 
@@ -18,8 +19,9 @@ export class AuthController {
   }
 
   @Post('logout')
-  logout(@Body() dto: AuthDto) {
-    return this.authService.logout(dto);
+  @HttpCode(HttpStatus.OK)
+  logout(@CurrentUserId() id: number): Promise<boolean> {
+    return this.authService.logout(id);
   }
 
   @Post('refresh')

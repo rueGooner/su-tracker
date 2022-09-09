@@ -72,8 +72,20 @@ export class AuthService {
     return tokens;
   }
 
-  logout(reateAuthDto: AuthDto) {
-    return 'Logout';
+  async logout(id: number): Promise<boolean> {
+    await this.prisma.supportWorker.updateMany({
+      where: {
+        id: id,
+        hashedToken: {
+          not: null,
+        },
+      },
+      data: {
+        hashedToken: null,
+      },
+    });
+
+    return true;
   }
 
   refresh(reateAuthDto: AuthDto) {
