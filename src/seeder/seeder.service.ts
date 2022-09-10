@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { serviceUsers, supportWorkers } from './data/data';
-import * as bcrypt from 'bcrypt';
+import * as argon from 'argon2';
 @Injectable()
 export class SeederService {
   constructor(private prisma: PrismaService) {}
@@ -22,7 +22,7 @@ export class SeederService {
       supportWorkers.map(async (a) => {
         return {
           ...a,
-          password: await bcrypt.hash('password', 10),
+          password: await argon.hash('password'),
         };
       }),
     );

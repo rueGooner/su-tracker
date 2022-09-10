@@ -3,4 +3,4 @@ export type JwtPayload = {
   sub: number;
 };
 
-export type RefreshTokenJwtPayload = JwtPayload & { refresh_token: string };
+export type RefreshTokenJwtPayload = JwtPayload & { refreshToken: string };

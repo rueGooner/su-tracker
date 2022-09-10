@@ -1,7 +1,7 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { AuthDto } from './dto/auth.dto';
-import * as bcrypt from 'bcrypt';
+import * as argon from 'argon2';
 import { Tokens } from './types/token.type';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from './types/jwt.type';
@@ -17,7 +17,8 @@ export class AuthService {
   ) {}
 
   async register(supportWorker: AuthDto): Promise<Tokens> {
-    const hash = await this.hashPassword(supportWorker.password);
+    // const hash = await this.hashPassword(supportWorker.password);
+    const hash = await argon.hash(supportWorker.password);
     const newSupportWorker = await this.prisma.supportWorker
       .create({
         data: {
@@ -54,9 +55,9 @@ export class AuthService {
     if (!supportWorker)
       throw new ForbiddenException('Incorrect Email Provided');
 
-    const passwordMatches = await bcrypt.compare(
-      supportWorker.password,
+    const passwordMatches = await argon.verify(
       foundSupportWorker.password,
+      supportWorker.password,
     );
 
     if (!passwordMatches)
@@ -98,8 +99,10 @@ export class AuthService {
     if (!supportWorker || !supportWorker.hashedToken)
       throw new ForbiddenException('In correct credentials provided');
 
-    const tokensMatch = await bcrypt.compare(supportWorker.hashedToken, token);
-    if (!tokensMatch) throw new ForbiddenException('Passwords do not match');
+    console.log('1', supportWorker.hashedToken, '2', token);
+
+    const tokensMatch = await argon.verify(supportWorker.hashedToken, token);
+    if (!tokensMatch) throw new ForbiddenException('Access Denied');
 
     const tokens = await this.getTokens(supportWorker.id, supportWorker.email);
     await this.updateRefreshToken(supportWorker.id, tokens.refresh_token);
@@ -108,7 +111,7 @@ export class AuthService {
   }
 
   async hashPassword(password: string): Promise<string> {
-    return await bcrypt.hash(password, 10);
+    return await argon.hash(password);
   }
 
   async getTokens(id: number, email: string): Promise<Tokens> {
@@ -120,7 +123,7 @@ export class AuthService {
     const [access_token, refresh_token] = await Promise.all([
       this.jwtService.signAsync(jwtPayload, {
         secret: this.config.get<string>('ACCESS_TOKEN'),
-        expiresIn: '1m',
+        expiresIn: '10m',
       }),
       this.jwtService.signAsync(jwtPayload, {
         secret: this.config.get<string>('REFRESH_TOKEN'),
@@ -135,7 +138,7 @@ export class AuthService {
   }
 
   async updateRefreshToken(id: number, token: string): Promise<void> {
-    const hash = await this.hashPassword(token);
+    const hash = await argon.hash(token);
 
     await this.prisma.supportWorker.update({
       where: {
