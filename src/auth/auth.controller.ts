@@ -6,28 +6,30 @@ import {
   HttpStatus,
   UseGuards,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { Public } from './decorators/ispublic.decorator';
 import { CurrentUserId, CurrentUser } from './decorators/userid.decorator';
-import { AuthDto } from './dto/auth.dto';
+import { LoginAuthDto, RegisterAuthDto } from './dto/auth.dto';
 import { AccessTokenGuard, RefreshTokenGuard } from './guards/token.guard';
 import { Tokens } from './types/token.type';
 
 @Controller('auth')
+@ApiTags('Auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Public()
   @Post('register')
   @HttpCode(HttpStatus.CREATED)
-  register(@Body() dto: AuthDto) {
+  register(@Body() dto: RegisterAuthDto) {
     return this.authService.register(dto);
   }
 
   @Public()
   @Post('login')
   @HttpCode(HttpStatus.OK)
-  login(@Body() dto: AuthDto): Promise<Tokens> {
+  login(@Body() dto: LoginAuthDto): Promise<Tokens> {
     return this.authService.login(dto);
   }
 

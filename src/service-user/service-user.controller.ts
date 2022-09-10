@@ -1,14 +1,26 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  HttpCode,
+  HttpStatus,
+} from '@nestjs/common';
 import { ServiceUserService } from './service-user.service';
-import { CreateServiceUserDto } from './dto/create-service-user.dto';
-import { UpdateServiceUserDto } from './dto/update-service-user.dto';
+import { ServiceUserDto } from './dto/service-user.dto';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('service-user')
+@ApiTags('Service Users')
 export class ServiceUserController {
   constructor(private readonly serviceUserService: ServiceUserService) {}
 
-  @Post()
-  create(@Body() createServiceUserDto: CreateServiceUserDto) {
+  @Post('create')
+  @HttpCode(HttpStatus.CREATED)
+  create(@Body() createServiceUserDto: ServiceUserDto) {
     return this.serviceUserService.create(createServiceUserDto);
   }
 
@@ -23,7 +35,10 @@ export class ServiceUserController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateServiceUserDto: UpdateServiceUserDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateServiceUserDto: ServiceUserDto,
+  ) {
     return this.serviceUserService.update(+id, updateServiceUserDto);
   }
 
