@@ -1,3 +1,4 @@
+import { PartialType } from '@nestjs/mapped-types';
 import { ApiProperty } from '@nestjs/swagger';
 import {
   IsDateString,
@@ -31,3 +32,5 @@ export class ServiceUserDto {
   @IsOptional()
   conditions: string[];
 }
+
+export class UpdateServiceUserDto extends PartialType(ServiceUserDto) {}

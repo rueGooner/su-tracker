@@ -10,7 +10,7 @@ import {
   HttpStatus,
 } from '@nestjs/common';
 import { ServiceUserService } from './service-user.service';
-import { ServiceUserDto } from './dto/service-user.dto';
+import { ServiceUserDto, UpdateServiceUserDto } from './dto/service-user.dto';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ServiceUser } from '@prisma/client';
 
@@ -40,7 +40,7 @@ export class ServiceUserController {
   @Patch(':id')
   update(
     @Param('id') id: string,
-    @Body() updateServiceUserDto: ServiceUserDto,
+    @Body() updateServiceUserDto: UpdateServiceUserDto,
   ) {
     return this.serviceUserService.update(+id, updateServiceUserDto);
   }
