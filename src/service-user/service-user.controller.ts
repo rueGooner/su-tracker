@@ -11,7 +11,8 @@ import {
 } from '@nestjs/common';
 import { ServiceUserService } from './service-user.service';
 import { ServiceUserDto } from './dto/service-user.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ServiceUser } from '@prisma/client';
 
 @Controller('service-user')
 @ApiTags('Service Users')
@@ -20,8 +21,10 @@ export class ServiceUserController {
 
   @Post('create')
   @HttpCode(HttpStatus.CREATED)
-  create(@Body() createServiceUserDto: ServiceUserDto) {
-    return this.serviceUserService.create(createServiceUserDto);
+  async create(
+    @Body() createServiceUserDto: ServiceUserDto,
+  ): Promise<ServiceUser> {
+    return await this.serviceUserService.create(createServiceUserDto);
   }
 
   @Get()
