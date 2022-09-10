@@ -5,6 +5,7 @@ import { SeederModule } from './seeder/seeder.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
+import { ServiceUserModule } from './service-user/service-user.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { ConfigModule } from '@nestjs/config';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
+    ServiceUserModule,
   ],
   controllers: [AppController],
   providers: [AppService],
