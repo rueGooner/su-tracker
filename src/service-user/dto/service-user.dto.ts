@@ -33,4 +33,28 @@ export class ServiceUserDto {
   conditions: string[];
 }
 
-export class UpdateServiceUserDto extends PartialType(ServiceUserDto) {}
+export class UpdateServiceUserDto extends ServiceUserDto {
+  @ApiProperty({ required: false })
+  @IsNotEmpty()
+  @IsString()
+  name: string;
+
+  @ApiProperty({ required: false })
+  @IsNotEmpty()
+  @IsString()
+  surname: string;
+
+  @ApiProperty({ required: false })
+  @IsDateString()
+  @IsOptional()
+  dateOfBirth: Date;
+
+  @ApiProperty({ required: false })
+  @IsDateString()
+  @IsOptional()
+  moveIn: Date;
+
+  @ApiProperty({ required: false })
+  @IsOptional()
+  conditions: string[];
+}

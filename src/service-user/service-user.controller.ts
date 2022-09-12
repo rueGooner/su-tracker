@@ -11,8 +11,9 @@ import {
 } from '@nestjs/common';
 import { ServiceUserService } from './service-user.service';
 import { ServiceUserDto, UpdateServiceUserDto } from './dto/service-user.dto';
-import { ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOkResponse, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ServiceUser } from '@prisma/client';
+import { ServiceUserEntity } from './entities/service-user.entity';
 
 @Controller('service-user')
 @ApiTags('Service Users')
@@ -21,6 +22,7 @@ export class ServiceUserController {
 
   @Post('create')
   @HttpCode(HttpStatus.CREATED)
+  @ApiOkResponse({ type: ServiceUserEntity })
   async create(
     @Body() createServiceUserDto: ServiceUserDto,
   ): Promise<ServiceUser> {
@@ -28,24 +30,31 @@ export class ServiceUserController {
   }
 
   @Get()
-  findAll() {
-    return this.serviceUserService.findAll();
+  @HttpCode(HttpStatus.OK)
+  @ApiOkResponse({ type: ServiceUserEntity, isArray: true })
+  async findAll(): Promise<ServiceUser[]> {
+    return await this.serviceUserService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.serviceUserService.findOne(+id);
+  @HttpCode(HttpStatus.OK)
+  @ApiOkResponse({ type: ServiceUserEntity })
+  async findOne(@Param('id') id: string): Promise<ServiceUser> {
+    return await this.serviceUserService.findOne(+id);
   }
 
   @Patch(':id')
-  update(
+  @HttpCode(HttpStatus.OK)
+  @ApiOkResponse({ type: ServiceUserEntity })
+  async update(
     @Param('id') id: string,
     @Body() updateServiceUserDto: UpdateServiceUserDto,
-  ) {
-    return this.serviceUserService.update(+id, updateServiceUserDto);
+  ): Promise<ServiceUser> {
+    return await this.serviceUserService.update(+id, updateServiceUserDto);
   }
 
   @Delete(':id')
+  @ApiOkResponse({ type: ServiceUserEntity })
   remove(@Param('id') id: string) {
     return this.serviceUserService.remove(+id);
   }

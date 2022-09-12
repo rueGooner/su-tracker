@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ServiceUser } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { serviceUsers } from 'src/seeder/data/data';
 import { ServiceUserDto, UpdateServiceUserDto } from './dto/service-user.dto';
 
 @Injectable()
@@ -17,18 +18,26 @@ export class ServiceUserService {
     return this.prisma.serviceUser.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} serviceUser`;
+  async findOne(id: number): Promise<ServiceUser> {
+    return await this.prisma.serviceUser.findUnique({
+      where: { id },
+    });
   }
 
-  async update(id: number, updateServiceUserDto: UpdateServiceUserDto) {
+  async update(
+    id: number,
+    updateServiceUserDto: UpdateServiceUserDto,
+  ): Promise<ServiceUser> {
     return await this.prisma.serviceUser.update({
       where: { id },
       data: updateServiceUserDto,
     });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} serviceUser`;
+  async remove(id: number): Promise<string> {
+    const deletedServiceUser = await this.prisma.serviceUser.delete({
+      where: { id },
+    });
+    return `#${deletedServiceUser.id}: ${deletedServiceUser.name} ${deletedServiceUser.surname} has been successfully removed.`;
   }
 }
