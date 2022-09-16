@@ -54,8 +54,15 @@ export class ServiceUserController {
   }
 
   @Delete(':id')
-  @ApiOkResponse({ type: ServiceUserEntity })
-  remove(@Param('id') id: string) {
-    return this.serviceUserService.remove(+id);
+  @ApiResponse({
+    status: 400,
+    description: 'Invalid Service User ID Supplied.',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Service User not found.',
+  })
+  async remove(@Param('id') id: number): Promise<string> {
+    return await this.serviceUserService.remove(id);
   }
 }
