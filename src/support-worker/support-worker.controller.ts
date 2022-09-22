@@ -10,7 +10,7 @@ import {
   HttpStatus,
   NotFoundException,
 } from '@nestjs/common';
-import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { ApiNotFoundResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import {
   SupportWorkerDto,
   UpdateSupportWorkerDto,
@@ -36,6 +36,9 @@ export class SupportWorkerController {
   }
 
   @Get(':id')
+  @HttpCode(HttpStatus.OK)
+  @ApiOkResponse({ type: SupportWorkerEntity })
+  @ApiNotFoundResponse({ status: 404, description: 'Not Found Error' })
   async findOne(@Param('id') id: string) {
     try {
       return await this.supportWorkerService.findOne(+id);
