@@ -17,7 +17,6 @@ export class AuthService {
   ) {}
 
   async register(supportWorker: RegisterAuthDto): Promise<Tokens> {
-    // const hash = await this.hashPassword(supportWorker.password);
     const hash = await argon.hash(supportWorker.password);
     const newSupportWorker = await this.prisma.supportWorker
       .create({
@@ -98,8 +97,6 @@ export class AuthService {
 
     if (!supportWorker || !supportWorker.hashedToken)
       throw new ForbiddenException('In correct credentials provided');
-
-    console.log('1', supportWorker.hashedToken, '2', token);
 
     const tokensMatch = await argon.verify(supportWorker.hashedToken, token);
     if (!tokensMatch) throw new ForbiddenException('Access Denied');

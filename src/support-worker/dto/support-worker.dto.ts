@@ -1,12 +1,17 @@
 import { ApiProperty } from '@nestjs/swagger';
 import {
   IsDateString,
+  IsEmail,
   IsNotEmpty,
   IsOptional,
   IsString,
 } from 'class-validator';
 
-export class ServiceUserDto {
+export class SupportWorkerDto {
+  @ApiProperty()
+  @IsEmail()
+  email: string;
+
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
@@ -17,6 +22,11 @@ export class ServiceUserDto {
   @IsString()
   surname: string;
 
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  password: string;
+
   @ApiProperty({ required: false })
   @IsDateString()
   @IsOptional()
@@ -25,14 +35,14 @@ export class ServiceUserDto {
   @ApiProperty({ required: false })
   @IsDateString()
   @IsOptional()
-  moveIn: Date;
+  startDate: Date;
 
   @ApiProperty({ required: false })
   @IsOptional()
-  conditions: string[];
+  skills: string[];
 }
 
-export class UpdateServiceUserDto extends ServiceUserDto {
+export class UpdateSupportWorkerDto extends SupportWorkerDto {
   @ApiProperty({ required: false })
   @IsNotEmpty()
   @IsString()
@@ -43,6 +53,11 @@ export class UpdateServiceUserDto extends ServiceUserDto {
   @IsString()
   surname: string;
 
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  password: string;
+
   @ApiProperty({ required: false })
   @IsDateString()
   @IsOptional()
@@ -51,9 +66,9 @@ export class UpdateServiceUserDto extends ServiceUserDto {
   @ApiProperty({ required: false })
   @IsDateString()
   @IsOptional()
-  moveIn: Date;
+  startDate: Date;
 
   @ApiProperty({ required: false })
   @IsOptional()
-  conditions: string[];
+  skills: string[];
 }
