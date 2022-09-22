@@ -1,18 +1,35 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  HttpCode,
+  HttpStatus,
+} from '@nestjs/common';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import {
+  SupportWorkerDto,
+  UpdateSupportWorkerDto,
+} from './dto/support-worker.dto';
+import { SupportWorkerEntity } from './entities/support-worker.entity';
 import { SupportWorkerService } from './support-worker.service';
-import { CreateSupportWorkerDto } from './dto/create-support-worker.dto';
-import { UpdateSupportWorkerDto } from './dto/update-support-worker.dto';
 
 @Controller('support-worker')
+@ApiTags('Support Workers')
 export class SupportWorkerController {
   constructor(private readonly supportWorkerService: SupportWorkerService) {}
 
   @Post()
-  create(@Body() createSupportWorkerDto: CreateSupportWorkerDto) {
+  create(@Body() createSupportWorkerDto: SupportWorkerDto) {
     return this.supportWorkerService.create(createSupportWorkerDto);
   }
 
   @Get()
+  @HttpCode(HttpStatus.OK)
+  @ApiOkResponse({ type: SupportWorkerEntity, isArray: true })
   findAll() {
     return this.supportWorkerService.findAll();
   }
@@ -23,7 +40,10 @@ export class SupportWorkerController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateSupportWorkerDto: UpdateSupportWorkerDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateSupportWorkerDto: UpdateSupportWorkerDto,
+  ) {
     return this.supportWorkerService.update(+id, updateSupportWorkerDto);
   }
 

@@ -1,15 +1,21 @@
 import { Injectable } from '@nestjs/common';
-import { CreateSupportWorkerDto } from './dto/create-support-worker.dto';
-import { UpdateSupportWorkerDto } from './dto/update-support-worker.dto';
+import { SupportWorker } from '@prisma/client';
+import { PrismaService } from 'src/prisma/prisma.service';
+import {
+  SupportWorkerDto,
+  UpdateSupportWorkerDto,
+} from './dto/support-worker.dto';
 
 @Injectable()
 export class SupportWorkerService {
-  create(createSupportWorkerDto: CreateSupportWorkerDto) {
+  constructor(private prisma: PrismaService) {}
+
+  create(createSupportWorkerDto: SupportWorkerDto) {
     return 'This action adds a new supportWorker';
   }
 
-  findAll() {
-    return `This action returns all supportWorker`;
+  async findAll(): Promise<SupportWorker[]> {
+    return await this.prisma.supportWorker.findMany();
   }
 
   findOne(id: number) {
