@@ -8,6 +8,7 @@ import {
   Delete,
   HttpCode,
   HttpStatus,
+  NotFoundException,
 } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import {
@@ -35,8 +36,12 @@ export class SupportWorkerController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.supportWorkerService.findOne(+id);
+  async findOne(@Param('id') id: string) {
+    try {
+      return await this.supportWorkerService.findOne(+id);
+    } catch (error) {
+      throw new NotFoundException(`No Support Worker match for ID: ${id}`);
+    }
   }
 
   @Patch(':id')

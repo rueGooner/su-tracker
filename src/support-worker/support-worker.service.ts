@@ -18,8 +18,12 @@ export class SupportWorkerService {
     return await this.prisma.supportWorker.findMany();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} supportWorker`;
+  async findOne(id: number): Promise<SupportWorker> {
+    return await this.prisma.supportWorker.findUniqueOrThrow({
+      where: {
+        id,
+      },
+    });
   }
 
   update(id: number, updateSupportWorkerDto: UpdateSupportWorkerDto) {
