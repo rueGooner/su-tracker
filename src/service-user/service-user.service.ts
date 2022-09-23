@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ServiceUser } from '@prisma/client';
-import { PrismaService } from 'src/prisma/prisma.service';
+import { NotesDto } from 'src/notes/dto/notes.dto';
+import { PrismaService } from '../prisma/prisma.service';
 import { ServiceUserDto, UpdateServiceUserDto } from './dto/service-user.dto';
 
 @Injectable()
@@ -38,5 +39,9 @@ export class ServiceUserService {
       where: { id },
     });
     return `#${deletedServiceUser.id}: ${deletedServiceUser.name} ${deletedServiceUser.surname} has been successfully removed.`;
+  }
+
+  async addNotesOnServiceUser(id: number, note: NotesDto) {
+    console.log(id, note);
   }
 }

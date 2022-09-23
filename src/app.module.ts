@@ -7,6 +7,7 @@ import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { ServiceUserModule } from './service-user/service-user.module';
 import { SupportWorkerModule } from './support-worker/support-worker.module';
+import { NotesModule } from './notes/notes.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { SupportWorkerModule } from './support-worker/support-worker.module';
     }),
     ServiceUserModule,
     SupportWorkerModule,
+    NotesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
