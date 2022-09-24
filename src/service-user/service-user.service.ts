@@ -40,8 +40,4 @@ export class ServiceUserService {
     });
     return `#${deletedServiceUser.id}: ${deletedServiceUser.name} ${deletedServiceUser.surname} has been successfully removed.`;
   }
-
-  async addNotesOnServiceUser(id: number, note: NotesDto) {
-    console.log(id, note);
-  }
 }

@@ -18,6 +18,7 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import { SupportWorker } from '@prisma/client';
 import {
   SupportWorkerDto,
   UpdateSupportWorkerDto,
@@ -39,7 +40,9 @@ export class SupportWorkerController {
   @ApiForbiddenResponse({
     description: 'Throws a forbidden exception. EG. Duplicate Email.',
   })
-  create(@Body() createSupportWorkerDto: SupportWorkerDto) {
+  create(
+    @Body() createSupportWorkerDto: SupportWorkerDto,
+  ): Promise<SupportWorker> {
     return this.supportWorkerService.create(createSupportWorkerDto);
   }
 
@@ -50,7 +53,7 @@ export class SupportWorkerController {
     isArray: true,
     description: 'Retrieve the full list of Support Workers.',
   })
-  findAll() {
+  findAll(): Promise<SupportWorker[]> {
     return this.supportWorkerService.findAll();
   }
 
@@ -64,7 +67,7 @@ export class SupportWorkerController {
     status: 404,
     description: 'Throws an error if no Support Worker is found by ID.',
   })
-  async findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: string): Promise<SupportWorker> {
     try {
       return await this.supportWorkerService.findOne(+id);
     } catch (error) {
@@ -84,7 +87,7 @@ export class SupportWorkerController {
   async update(
     @Param('id') id: string,
     @Body() updateSupportWorkerDto: UpdateSupportWorkerDto,
-  ) {
+  ): Promise<SupportWorker> {
     return await this.supportWorkerService.update(+id, updateSupportWorkerDto);
   }
 
@@ -101,7 +104,7 @@ export class SupportWorkerController {
     status: 404,
     description: 'Throws when a Support Worker is not found.',
   })
-  async remove(@Param('id') id: string) {
+  async remove(@Param('id') id: string): Promise<SupportWorker> {
     return await this.supportWorkerService.remove(+id);
   }
 }

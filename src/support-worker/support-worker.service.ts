@@ -71,7 +71,7 @@ export class SupportWorkerService {
     }
   }
 
-  async remove(id: number) {
+  async remove(id: number): Promise<SupportWorker> {
     try {
       return await this.prisma.supportWorker.delete({
         where: { id },

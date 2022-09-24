@@ -19,7 +19,6 @@ export class NotesService {
           supportWorkerId: createNoteDto.supportWorkerId,
         },
       });
-      console.log(newNote);
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
         if (error.code === 'P2002') {
