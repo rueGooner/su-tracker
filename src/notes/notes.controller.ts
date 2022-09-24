@@ -23,6 +23,10 @@ export class NotesController {
   async findAll() {
     return await this.notesService.findAll();
   }
+  @Get('service-user/:id')
+  async findByServiceUser(@Param('id') id: string) {
+    return await this.notesService.findByServiceUser(+id);
+  }
 
   @Get(':id')
   findOne(@Param('id') id: string) {

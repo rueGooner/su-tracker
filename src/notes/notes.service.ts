@@ -3,6 +3,7 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { capitaliseCharacter } from '../utils/string-functions';
 import { PrismaService } from '../prisma/prisma.service';
 import { NotesDto, UpdateNotesDto } from './dto/notes.dto';
+import { Note } from '@prisma/client';
 
 @Injectable()
 export class NotesService {
@@ -20,7 +21,6 @@ export class NotesService {
       });
       console.log(newNote);
     } catch (error) {
-      console.log('ERROR', error);
       if (error instanceof PrismaClientKnownRequestError) {
         if (error.code === 'P2002') {
           throw new ForbiddenException(
@@ -34,6 +34,18 @@ export class NotesService {
 
   async findAll() {
     return await this.prisma.note.findMany();
+  }
+
+  async findByServiceUser(id: number): Promise<Note[] | string> {
+    const notes = await this.prisma.note.findMany({
+      where: {
+        serviceUserId: id,
+      },
+    });
+
+    return notes.length === 0
+      ? `There are no Notes for Service User: #${id}`
+      : notes;
   }
 
   findOne(id: number) {
