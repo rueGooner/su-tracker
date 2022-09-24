@@ -48,8 +48,10 @@ export class NotesService {
       : notes;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} note`;
+  async findOne(id: number): Promise<Note> {
+    return await this.prisma.note.findUnique({
+      where: { id },
+    });
   }
 
   update(id: number, updateNoteDto: UpdateNotesDto) {
