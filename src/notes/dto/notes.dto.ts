@@ -30,4 +30,10 @@ export class UpdateNotesDto {
   @IsString()
   @MinLength(20)
   content: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  @MinLength(20)
+  reason: string;
 }

@@ -3,7 +3,7 @@ import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { capitaliseCharacter } from '../utils/string-functions';
 import { PrismaService } from '../prisma/prisma.service';
 import { NotesDto, UpdateNotesDto } from './dto/notes.dto';
-import { Note } from '@prisma/client';
+import { Note, UpdatedNote } from '@prisma/client';
 
 @Injectable()
 export class NotesService {
@@ -54,13 +54,14 @@ export class NotesService {
     });
   }
 
-  async update(id: number, updateNoteDto: UpdateNotesDto) {
+  async update(
+    id: number,
+    updateNoteDto: UpdateNotesDto,
+  ): Promise<UpdatedNote> {
     console.log(updateNoteDto);
 
-    return `This action updates a #${id} note`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} note`;
+    return await this.prisma.updatedNote.create({
+      data: { ...updateNoteDto, noteId: id },
+    });
   }
 }

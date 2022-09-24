@@ -20,8 +20,18 @@ model Note {
   serviceUserId   Int?
   SupportWorker   SupportWorker? @relation(fields: [supportWorkerId], references: [id])
   supportWorkerId Int?
+  UpdatedNote     UpdatedNote[]
 
   @@map("notes")
+}
+
+model UpdatedNote {
+  id        Int      @id @default(autoincrement())
+  content   String
+  note      Note     @relation(fields: [noteId], references: [id])
+  noteId    Int
+  reason    String
+  createdAt DateTime @default(now())
 }
 
 model ServiceUser {

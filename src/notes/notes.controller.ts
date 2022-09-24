@@ -5,7 +5,6 @@ import {
   Body,
   Patch,
   Param,
-  Delete,
   HttpCode,
   HttpStatus,
 } from '@nestjs/common';
@@ -13,9 +12,9 @@ import {
   ApiCreatedResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
-  ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import { UpdatedNote } from '@prisma/client';
 import { NotesDto, UpdateNotesDto } from './dto/notes.dto';
 import { NoteEntity } from './entities/note.entity';
 import { NotesService } from './notes.service';
@@ -79,24 +78,10 @@ export class NotesController {
   @ApiNotFoundResponse({
     description: 'Throws an error if no Note is found by ID.',
   })
-  update(@Param('id') id: string, @Body() updateNoteDto: UpdateNotesDto) {
-    return this.notesService.update(+id, updateNoteDto);
-  }
-
-  @Delete(':id')
-  @HttpCode(HttpStatus.OK)
-  @ApiOkResponse({
-    description: 'Returns confirmation of the deleted Note.',
-  })
-  @ApiResponse({
-    status: 400,
-    description: 'Throws when an invalid ID is supplied.',
-  })
-  @ApiNotFoundResponse({
-    status: 404,
-    description: 'Throws when a Note is not found.',
-  })
-  remove(@Param('id') id: string) {
-    return this.notesService.remove(+id);
+  async update(
+    @Param('id') id: string,
+    @Body() updateNoteDto: UpdateNotesDto,
+  ): Promise<UpdatedNote> {
+    return await this.notesService.update(+id, updateNoteDto);
   }
 }
