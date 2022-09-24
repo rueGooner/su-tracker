@@ -9,7 +9,7 @@ import { Note } from '@prisma/client';
 export class NotesService {
   constructor(private prisma: PrismaService) {}
 
-  async create(createNoteDto: NotesDto) {
+  async create(createNoteDto: NotesDto): Promise<Note> {
     try {
       const newNote = await this.prisma.note.create({
         data: {
@@ -19,6 +19,7 @@ export class NotesService {
           supportWorkerId: createNoteDto.supportWorkerId,
         },
       });
+      return newNote;
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
         if (error.code === 'P2002') {
@@ -53,7 +54,9 @@ export class NotesService {
     });
   }
 
-  update(id: number, updateNoteDto: UpdateNotesDto) {
+  async update(id: number, updateNoteDto: UpdateNotesDto) {
+    console.log(updateNoteDto);
+
     return `This action updates a #${id} note`;
   }
 

@@ -14,12 +14,14 @@ import {
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiResponse,
+  ApiTags,
 } from '@nestjs/swagger';
 import { NotesDto, UpdateNotesDto } from './dto/notes.dto';
 import { NoteEntity } from './entities/note.entity';
 import { NotesService } from './notes.service';
 
 @Controller('notes')
+@ApiTags('Notes')
 export class NotesController {
   constructor(private readonly notesService: NotesService) {}
 

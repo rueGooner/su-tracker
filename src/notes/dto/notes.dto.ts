@@ -1,14 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  IsDateString,
-  IsNotEmpty,
-  IsNumber,
-  IsOptional,
-  IsString,
-  MinLength,
-} from 'class-validator';
-import { ServiceUserDto } from '../../service-user/dto/service-user.dto';
-import { SupportWorkerDto } from '../../support-worker/dto/support-worker.dto';
+import { IsNotEmpty, IsNumber, IsString, MinLength } from 'class-validator';
 
 export class NotesDto {
   @ApiProperty()
@@ -23,15 +14,9 @@ export class NotesDto {
   content: string;
 
   @ApiProperty()
-  ServiceUser: ServiceUserDto;
-
-  @ApiProperty()
   @IsNotEmpty()
   @IsNumber()
   serviceUserId: number;
-
-  @ApiProperty()
-  SupportWorker: SupportWorkerDto;
 
   @ApiProperty()
   @IsNotEmpty()
@@ -39,7 +24,7 @@ export class NotesDto {
   supportWorkerId: number;
 }
 
-export class UpdateNotesDto extends NotesDto {
+export class UpdateNotesDto {
   @ApiProperty()
   @IsNotEmpty()
   @IsString()
