@@ -71,20 +71,14 @@ export class SupportWorkerService {
     }
   }
 
-  async remove(id: number): Promise<SupportWorker> {
+  async remove(id: number): Promise<{ deleted: boolean; message?: string }> {
     try {
-      return await this.prisma.supportWorker.delete({
+      await this.prisma.supportWorker.delete({
         where: { id },
       });
+      return { deleted: true };
     } catch (error) {
-      if (error instanceof PrismaClientKnownRequestError) {
-        if (error.code === 'P2025') {
-          throw new ForbiddenException(
-            capitaliseCharacter(`Support Worker: ${id} does not exist.`, 0),
-          );
-        }
-      }
-      throw error;
+      return { deleted: false, message: error.message };
     }
   }
 }

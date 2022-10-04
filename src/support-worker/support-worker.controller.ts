@@ -104,7 +104,9 @@ export class SupportWorkerController {
     status: 404,
     description: 'Throws when a Support Worker is not found.',
   })
-  async remove(@Param('id') id: string): Promise<SupportWorker> {
+  async remove(
+    @Param('id') id: number,
+  ): Promise<{ deleted: boolean; message?: string }> {
     return await this.supportWorkerService.remove(+id);
   }
 }
