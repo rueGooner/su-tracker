@@ -43,7 +43,7 @@ export class SupportWorkerService {
   }
 
   async findOne(id: number): Promise<SupportWorker> {
-    return await this.prisma.supportWorker.findUniqueOrThrow({
+    return await this.prisma.supportWorker.findUnique({
       where: {
         id,
       },
