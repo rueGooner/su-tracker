@@ -9,6 +9,7 @@ import {
   HttpCode,
   HttpStatus,
   NotFoundException,
+  ParseIntPipe,
 } from '@nestjs/common';
 import {
   ApiCreatedResponse,
@@ -67,7 +68,7 @@ export class SupportWorkerController {
     status: 404,
     description: 'Throws an error if no Support Worker is found by ID.',
   })
-  async findOne(@Param('id') id: string): Promise<SupportWorker> {
+  async findOne(@Param('id', ParseIntPipe) id: number): Promise<SupportWorker> {
     try {
       return await this.supportWorkerService.findOne(+id);
     } catch (error) {
@@ -85,7 +86,7 @@ export class SupportWorkerController {
     description: 'Throws if no Support Worker is found.',
   })
   async update(
-    @Param('id') id: string,
+    @Param('id', ParseIntPipe) id: number,
     @Body() updateSupportWorkerDto: UpdateSupportWorkerDto,
   ): Promise<SupportWorker> {
     return await this.supportWorkerService.update(+id, updateSupportWorkerDto);

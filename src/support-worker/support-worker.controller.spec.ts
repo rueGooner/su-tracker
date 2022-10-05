@@ -3,6 +3,9 @@ import { SupportWorkerController } from './support-worker.controller';
 import { SupportWorkerDto } from './dto/support-worker.dto';
 import { SupportWorkerService } from './support-worker.service';
 import { _MockSupportWorkers } from './mocks/support-worker.mock';
+import { randUuid } from '@ngneat/falso';
+
+const newId = randUuid();
 
 const mockDB = {
   findOne: jest
@@ -18,6 +21,12 @@ const mockDB = {
       }),
     ),
   remove: jest.fn().mockResolvedValue({ deleted: true }),
+  create: jest.fn().mockImplementation((supportWorker: SupportWorkerDto) =>
+    Promise.resolve({
+      id: newId,
+      ...supportWorker,
+    }),
+  ),
 };
 
 describe('Support Worker Controller', () => {
@@ -45,7 +54,7 @@ describe('Support Worker Controller', () => {
 
   describe('findOne', () => {
     it('should return one support worker', async () => {
-      await expect(controller.findOne('string')).resolves.toEqual(
+      await expect(controller.findOne(1)).resolves.toEqual(
         _MockSupportWorkers[0],
       );
     });
@@ -58,9 +67,7 @@ describe('Support Worker Controller', () => {
         name: 'Updated',
       };
 
-      await expect(
-        controller.update('string', newSupportWorker),
-      ).resolves.toEqual({
+      await expect(controller.update(1, newSupportWorker)).resolves.toEqual({
         ...newSupportWorker,
       });
     });
@@ -82,6 +89,19 @@ describe('Support Worker Controller', () => {
         deleted: false,
       });
       expect(deleteSpy).toBeCalledWith(2);
+    });
+  });
+
+  describe('create', () => {
+    it('should create a new support worker', async () => {
+      const newSupportWorker: SupportWorkerDto = {
+        ..._MockSupportWorkers[1],
+        name: 'New Chap',
+      };
+      await expect(controller.create(newSupportWorker)).resolves.toEqual({
+        id: newId,
+        ...newSupportWorker,
+      });
     });
   });
 });
