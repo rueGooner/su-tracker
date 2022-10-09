@@ -3,6 +3,7 @@ import { ServiceUserController } from './service-user.controller';
 import { ServiceUserDto } from './dto/service-user.dto';
 import { ServiceUserService } from './service-user.service';
 import { randBetweenDate, randUuid } from '@ngneat/falso';
+import { MockServiceUserList } from './service-user.mock';
 
 const newId = randUuid();
 const dob = randBetweenDate({
@@ -60,6 +61,12 @@ describe('Service User Controller', () => {
         id: newId,
         ...serviceUser,
       });
+    });
+  });
+
+  describe('findAll', () => {
+    it('should return an array of service users', async () => {
+      await expect(controller.findAll()).resolves.toEqual(MockServiceUserList);
     });
   });
 });
