@@ -34,6 +34,7 @@ describe('Service User Controller', () => {
                   ...serviceUser,
                 }),
               ),
+            findAll: jest.fn().mockResolvedValue(MockServiceUserList),
           },
         },
       ],
