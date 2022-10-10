@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ServiceUserController } from './service-user.controller';
-import { ServiceUserDto, UpdateServiceUserDto } from "./dto/service-user.dto";
+import { ServiceUserDto, UpdateServiceUserDto } from './dto/service-user.dto';
 import { ServiceUserService } from './service-user.service';
 import { randBetweenDate, randUuid } from '@ngneat/falso';
 import { MockServiceUserList } from './service-user.mock';
@@ -51,8 +51,9 @@ describe('Service User Controller', () => {
             ),
             update: jest
               .fn()
-              .mockImplementation((id: number, serviceUser: UpdateServiceUserDto) =>
-                Promise.resolve({ id, ...serviceUser }),
+              .mockImplementation(
+                (id: number, serviceUser: UpdateServiceUserDto) =>
+                  Promise.resolve({ id, ...serviceUser }),
               ),
           },
         },
@@ -120,6 +121,14 @@ describe('Service User Controller', () => {
       await expect(controller.update(1, serviceUser)).resolves.toEqual({
         id: 1,
         ...serviceUser,
+      });
+    });
+  });
+
+  describe('remove', () => {
+    it('should return that it deleted a service user', async () => {
+      await expect(controller.remove(1)).resolves.toEqual({
+        deleted: true,
       });
     });
   });
