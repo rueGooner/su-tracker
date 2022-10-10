@@ -6,6 +6,7 @@ import { randBetweenDate, randUuid } from '@ngneat/falso';
 import { MockServiceUserList } from './service-user.mock';
 
 const newId = randUuid();
+const aDate = new Date();
 const dob = randBetweenDate({
   from: new Date('01/01/1968'),
   to: new Date('01/01/1995'),
@@ -35,23 +36,17 @@ describe('Service User Controller', () => {
                 }),
               ),
             findAll: jest.fn().mockResolvedValue(MockServiceUserList),
-            findOne: jest.fn().mockImplementation((id: string) =>
+            findOne: jest.fn().mockImplementation((id: number) =>
               Promise.resolve({
                 uid: newId,
                 id: id,
-                createdAt: new Date(),
-                updatedAt: new Date(),
+                createdAt: aDate,
+                updatedAt: aDate,
                 name: 'Linda',
                 surname: 'Kirkland',
                 conditions: [],
-                movedIn: randBetweenDate({
-                  from: new Date('01/01/1998'),
-                  to: new Date('01/01/2022'),
-                }),
-                dateOfBirth: randBetweenDate({
-                  from: new Date('01/01/1968'),
-                  to: new Date('01/01/1995'),
-                }),
+                movedIn,
+                dateOfBirth: dob,
               }),
             ),
           },
@@ -92,22 +87,16 @@ describe('Service User Controller', () => {
 
   describe('findOne', () => {
     it('should return a single service user', async () => {
-      await expect(controller.findOne('test-string')).resolves.toEqual({
+      await expect(controller.findOne(1)).resolves.toEqual({
         uid: newId,
-        id: 'test-string',
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        id: 1,
+        createdAt: aDate,
+        updatedAt: aDate,
         name: 'Linda',
         surname: 'Kirkland',
         conditions: [],
-        movedIn: randBetweenDate({
-          from: new Date('01/01/1998'),
-          to: new Date('01/01/2022'),
-        }),
-        dateOfBirth: randBetweenDate({
-          from: new Date('01/01/1968'),
-          to: new Date('01/01/1995'),
-        }),
+        movedIn: movedIn,
+        dateOfBirth: dob,
       });
     });
   });
