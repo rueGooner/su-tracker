@@ -17,7 +17,7 @@ export class SupportWorkerService {
     createSupportWorkerDto: SupportWorkerDto,
   ): Promise<SupportWorker> {
     const hash = await argon.hash(createSupportWorkerDto.password);
-    const newSupportWorker = await this.prisma.supportWorker
+    return this.prisma.supportWorker
       .create({
         data: {
           ...createSupportWorkerDto,
@@ -34,16 +34,14 @@ export class SupportWorkerService {
         }
         throw error;
       });
-
-    return newSupportWorker;
   }
 
   async findAll(): Promise<SupportWorker[]> {
-    return await this.prisma.supportWorker.findMany();
+    return this.prisma.supportWorker.findMany();
   }
 
   async findOne(id: number): Promise<SupportWorker> {
-    return await this.prisma.supportWorker.findUnique({
+    return this.prisma.supportWorker.findUnique({
       where: {
         id,
       },

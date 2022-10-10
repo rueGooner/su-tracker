@@ -8,6 +8,7 @@ import {
   Delete,
   HttpCode,
   HttpStatus,
+  ParseIntPipe,
 } from '@nestjs/common';
 import { ServiceUserService } from './service-user.service';
 import { ServiceUserDto, UpdateServiceUserDto } from './dto/service-user.dto';
@@ -26,31 +27,31 @@ export class ServiceUserController {
   async create(
     @Body() createServiceUserDto: ServiceUserDto,
   ): Promise<ServiceUser> {
-    return await this.serviceUserService.create(createServiceUserDto);
+    return this.serviceUserService.create(createServiceUserDto);
   }
 
   @Get()
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse({ type: ServiceUserEntity, isArray: true })
   async findAll(): Promise<ServiceUser[]> {
-    return await this.serviceUserService.findAll();
+    return this.serviceUserService.findAll();
   }
 
   @Get(':id')
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse({ type: ServiceUserEntity })
-  async findOne(@Param('id') id: string): Promise<ServiceUser> {
-    return await this.serviceUserService.findOne(+id);
+  async findOne(@Param('id', ParseIntPipe) id: number): Promise<ServiceUser> {
+    return this.serviceUserService.findOne(+id);
   }
 
   @Patch(':id')
   @HttpCode(HttpStatus.OK)
   @ApiOkResponse({ type: ServiceUserEntity })
   async update(
-    @Param('id') id: string,
+    @Param('id', ParseIntPipe) id: number,
     @Body() updateServiceUserDto: UpdateServiceUserDto,
   ): Promise<ServiceUser> {
-    return await this.serviceUserService.update(+id, updateServiceUserDto);
+    return this.serviceUserService.update(+id, updateServiceUserDto);
   }
 
   @Delete(':id')
@@ -63,6 +64,6 @@ export class ServiceUserController {
     description: 'Service User not found.',
   })
   async remove(@Param('id') id: number): Promise<string> {
-    return await this.serviceUserService.remove(id);
+    return this.serviceUserService.remove(id);
   }
 }

@@ -8,7 +8,7 @@ export class ServiceUserService {
   constructor(private prisma: PrismaService) {}
 
   async create(dto: ServiceUserDto): Promise<ServiceUser> {
-    return await this.prisma.serviceUser.create({
+    return this.prisma.serviceUser.create({
       data: dto,
     });
   }
@@ -18,7 +18,7 @@ export class ServiceUserService {
   }
 
   async findOne(id: number): Promise<ServiceUser> {
-    return await this.prisma.serviceUser.findUnique({
+    return this.prisma.serviceUser.findUnique({
       where: { id },
     });
   }
@@ -27,7 +27,7 @@ export class ServiceUserService {
     id: number,
     updateServiceUserDto: UpdateServiceUserDto,
   ): Promise<ServiceUser> {
-    return await this.prisma.serviceUser.update({
+    return this.prisma.serviceUser.update({
       where: { id },
       data: updateServiceUserDto,
     });

@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ServiceUserController } from './service-user.controller';
 import { ServiceUserDto } from './dto/service-user.dto';
 import { ServiceUserService } from './service-user.service';
-import { randBetweenDate, randNumber, randUuid } from '@ngneat/falso';
+import { randBetweenDate, randUuid } from '@ngneat/falso';
 import { MockServiceUserList } from './service-user.mock';
 
 const newId = randUuid();
@@ -35,6 +35,25 @@ describe('Service User Controller', () => {
                 }),
               ),
             findAll: jest.fn().mockResolvedValue(MockServiceUserList),
+            findOne: jest.fn().mockImplementation((id: string) =>
+              Promise.resolve({
+                uid: newId,
+                id: id,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+                name: 'Linda',
+                surname: 'Kirkland',
+                conditions: [],
+                movedIn: randBetweenDate({
+                  from: new Date('01/01/1998'),
+                  to: new Date('01/01/2022'),
+                }),
+                dateOfBirth: randBetweenDate({
+                  from: new Date('01/01/1968'),
+                  to: new Date('01/01/1995'),
+                }),
+              }),
+            ),
           },
         },
       ],
@@ -74,8 +93,8 @@ describe('Service User Controller', () => {
   describe('findOne', () => {
     it('should return a single service user', async () => {
       await expect(controller.findOne('test-string')).resolves.toEqual({
-        uid: randUuid(),
-        id: randNumber(),
+        uid: newId,
+        id: 'test-string',
         createdAt: new Date(),
         updatedAt: new Date(),
         name: 'Linda',
