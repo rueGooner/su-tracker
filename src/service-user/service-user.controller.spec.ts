@@ -55,6 +55,7 @@ describe('Service User Controller', () => {
                 (id: number, serviceUser: UpdateServiceUserDto) =>
                   Promise.resolve({ id, ...serviceUser }),
               ),
+            remove: jest.fn().mockResolvedValue({ deleted: true })
           },
         },
       ],
