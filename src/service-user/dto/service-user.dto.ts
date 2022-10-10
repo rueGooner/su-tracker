@@ -56,4 +56,9 @@ export class UpdateServiceUserDto extends ServiceUserDto {
   @ApiProperty({ required: false })
   @IsOptional()
   conditions: string[];
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  uid: string;
 }

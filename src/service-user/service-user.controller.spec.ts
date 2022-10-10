@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ServiceUserController } from './service-user.controller';
-import { ServiceUserDto } from './dto/service-user.dto';
+import { ServiceUserDto, UpdateServiceUserDto } from "./dto/service-user.dto";
 import { ServiceUserService } from './service-user.service';
 import { randBetweenDate, randUuid } from '@ngneat/falso';
 import { MockServiceUserList } from './service-user.mock';
@@ -49,6 +49,11 @@ describe('Service User Controller', () => {
                 dateOfBirth: dob,
               }),
             ),
+            update: jest
+              .fn()
+              .mockImplementation((id: number, serviceUser: UpdateServiceUserDto) =>
+                Promise.resolve({ id, ...serviceUser }),
+              ),
           },
         },
       ],
@@ -97,6 +102,24 @@ describe('Service User Controller', () => {
         conditions: [],
         movedIn: movedIn,
         dateOfBirth: dob,
+      });
+    });
+  });
+
+  describe('update', () => {
+    it('should update a service user', async () => {
+      const serviceUser: UpdateServiceUserDto = {
+        name: 'Linda',
+        surname: 'Kirkland',
+        conditions: [],
+        moveIn: movedIn,
+        dateOfBirth: dob,
+        uid: newId,
+      };
+
+      await expect(controller.update(1, serviceUser)).resolves.toEqual({
+        id: 1,
+        ...serviceUser,
       });
     });
   });
