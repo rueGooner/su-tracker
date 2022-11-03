@@ -29,7 +29,7 @@ export class AuthController {
   @Public()
   @Post('login')
   @HttpCode(HttpStatus.OK)
-  login(@Body() dto: LoginAuthDto): Promise<Tokens> {
+  async login(@Body() dto: LoginAuthDto): Promise<Tokens> {
     return this.authService.login(dto);
   }
 
