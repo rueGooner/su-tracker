@@ -31,4 +31,7 @@ export class ServiceUserEntity implements ServiceUser {
 
   @ApiProperty({ required: false })
   notes: string[];
+
+  @ApiProperty()
+  roomNumber: number;
 }

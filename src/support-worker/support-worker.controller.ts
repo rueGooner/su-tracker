@@ -25,6 +25,7 @@ import {
   UpdateSupportWorkerDto,
 } from './dto/support-worker.dto';
 import { SupportWorkerEntity } from './entities/support-worker.entity';
+import { SupportWorkerResponse } from './entities/support-worker.types';
 import { SupportWorkerService } from './support-worker.service';
 
 @Controller('support-worker')
@@ -54,7 +55,7 @@ export class SupportWorkerController {
     isArray: true,
     description: 'Retrieve the full list of Support Workers.',
   })
-  findAll(): Promise<SupportWorker[]> {
+  findAll(): Promise<SupportWorkerResponse> {
     return this.supportWorkerService.findAll();
   }
 

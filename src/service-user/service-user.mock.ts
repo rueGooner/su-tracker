@@ -1,5 +1,5 @@
 import { ServiceUser } from '@prisma/client';
-import { randBetweenDate, randNumber, randUuid } from "@ngneat/falso";
+import { randBetweenDate, randNumber, randUuid } from '@ngneat/falso';
 
 const newServiceUser = (): ServiceUser => {
   return {
@@ -10,6 +10,7 @@ const newServiceUser = (): ServiceUser => {
     name: 'Linda',
     surname: 'Kirkland',
     conditions: [],
+    roomNumber: randNumber(),
     movedIn: randBetweenDate({
       from: new Date('01/01/1998'),
       to: new Date('01/01/2022'),

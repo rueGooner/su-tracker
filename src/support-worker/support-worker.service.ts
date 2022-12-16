@@ -8,6 +8,7 @@ import {
   SupportWorkerDto,
   UpdateSupportWorkerDto,
 } from './dto/support-worker.dto';
+import { SupportWorkerResponse } from './entities/support-worker.types';
 
 @Injectable()
 export class SupportWorkerService {
@@ -36,8 +37,15 @@ export class SupportWorkerService {
       });
   }
 
-  async findAll(): Promise<SupportWorker[]> {
-    return this.prisma.supportWorker.findMany();
+  async findAll(): Promise<SupportWorkerResponse> {
+    return this.prisma.supportWorker.findMany({
+      select: {
+        id: true,
+        name: true,
+        surname: true,
+        email: true,
+      },
+    });
   }
 
   async findOne(id: number): Promise<SupportWorker> {

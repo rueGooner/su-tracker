@@ -49,6 +49,7 @@ model ServiceUser {
   movedIn     DateTime?
   updatedAt   DateTime  @updatedAt
   conditions  String[]
+  roomNumber  Int?
 
   notes Note[]
 
